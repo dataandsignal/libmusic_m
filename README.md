@@ -115,7 +115,7 @@ This is explained in more detail in:
 - Penny W. D., Signal Processing Course, University College London, 2000
 
 - and also in my own [engineering thesis](https://github.com/dataandsignal/libmusic_m/files/9567833/praca_inz_gregor.pdf)
-, (it's in polish, will be translated to english) 
+, (it's written in polish, probably will be translated to english) 
 
 
 ## Copyright 
