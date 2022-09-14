@@ -15,16 +15,41 @@
 % and by eigenfilter method (eigenrooting).
 %
 % Basic usage
-%   method = spectral_method('music', M, 2*P);
-%   [Vy,Vx,Ve,A,Ry] = method.process(y)
-%   [X2,d2] = method.psd(method, 1:1:4000, Fs);
+%
+% Create a spectral method ('music', 'pisarenko', 'ev', 'mn' for Minimum
+% Norm method)
+%   method = lm_spectral_method('music', M, 2*P);
+%
+% Process input samples and optionally capture the intermediate results
+% (all eigenvectors, signal eigenvectors, noise eigenvectors, eigenvalues,
+% autocorrelation matrix)
+%   [Vy,Vx,Ve,A,Ry] = method.process(y);
+%
+% Compute full PSD for frequencies 1 - 4000 Hz (sampling rate is 8 kHz)
+%   [X2,d2] = method.psd(method, 1:1:4000, 8000);
+%
+% Get single tone amplitude
 %   A = method.single_tone_amplitude();
-%   A = method.dual_tone_amplitude();
-%   A = method.solve_for_amplitudes([f1],Fs);
-%   [peaks, pmu] = method.peaks(fs, Fs);
-%   [fs] = method.eigenrooting(Fs,0,0);
-% 
-% For detailed usage see exmples and tests folders.
+%
+% Get 2 amplitudes, for dual tone with freqs f1, f2 and sampling rate Fs
+%   A = method.dual_tone_amplitude(f1, f2, Fs);
+%
+% Get all amplitudes (for each sinusoid given in fs)
+%   A = method.solve_for_amplitudes([fs], Fs);
+%
+% Get detected frequencies by peak searching (considering only these
+% frequencies that are passed in fs). peakWidth is a width of a peak, use 0
+% for default
+%   [peaks, pmu] = method.peaks(fs, Fs, peakWidth);
+%
+% Get detected frequencies by rooting noise eigenvectors
+%   [fs] = method.eigenrooting(Fs, plot, print);
+%
+% In all methods:
+%   plot - 0 if plot should not be created
+%   print - 0 if debugging info should not be printed
+%
+% For detailed usage see examples and tests folders.
 %
 % date: August 2022
 
@@ -60,6 +85,7 @@ classdef lm_spectral_method < handle
                 case 'mn'
                     m.psd = @psd_minimum_norm;
                 otherwise
+                    m.psd = @psd_music;
             end
             m.M = M;
             m.P2 = P2;
@@ -190,6 +216,10 @@ classdef lm_spectral_method < handle
             A = [A1 A2]; 
         end
 
+        % Find all amplitudes (for real sinusooids, this is P2/2 amplitudes).
+        %
+        % This methods finds amplitude estimates from pure signal space
+        % eigenvectors and steering vectors, for frequqncies given in fs.
         function [A] = solve_for_amplitudes(m, fs, Fs)
 
             fs = fs(:)';
@@ -302,7 +332,7 @@ classdef lm_spectral_method < handle
                 e = m.Ve(:,i);
                 Zet = tf(e',1);
                 if print
-                   fprintf("Eigenwektor:\n");
+                   fprintf("Eigenvector:\n");
                     e
                     Zet
                 end
@@ -322,7 +352,7 @@ classdef lm_spectral_method < handle
                     fs(i,3) = (angle(r)/pi)*Fs/2;
                 end
                 if print
-                    fprintf("Pierwiastki (odległość, z, f):\n");
+                    fprintf("Roots (distance, z, f):\n");
                     fs(:,1)
                     fs(:,2)
                     fs(:,3)

@@ -1,4 +1,5 @@
 # libmusic_m
+[![View libmusic_m on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/117630-libmusic_m)
 
 This is a MATLAB implementation of spectral methods based on signal space decomposition.
 The idea behind those methods is to decompose noisy signal into pure signal and noise.
@@ -7,26 +8,28 @@ Methods provided here are:
 - EV
 - Minimum Norm
 
+![ev_mn](https://user-images.githubusercontent.com/40000574/192100280-25fb55de-acfc-4938-a29a-e41435caf1c4.jpg)
+
+
 You will find examples in **examples** folder and tests in **tests** folder.
 There is also specific support for DTMF (dual tone signals), including a toy testing framework for them. Just ignore them or reuse that for your own purposes.
 
 # Using in MATLAB
-1. Add <b>core</b> folder to your path
+1. Add the whole folder and subfolders to MATLAB's path (or <b>core</b> folder and <b>sounds</b> at minimum, if you don't plan to run tests)
 2. Create a method handle
 
         method = lm_spectral_method(kind, M, 2*P);
 
 where <b>kind</b> is one of `pisarenko/music/ev/mn`, <b>M</b> is autocorrelation order and <b>P</b> is number of real signal sources.
 
-3. Process your samples
+3. Process input samples and optionally capture the intermediate results (all eigenvectors, signal eigenvectors, noise eigenvectors, eigenvalues, autocorrelation matrix)
 
-        [Vy,Vx,Ve,A,Ry] = method.process(y)
+        [Vy,Vx,Ve,A,Ry] = method.process(y);
 
-4. Compute PSD
+4. Compute full PSD for frequencies 1 - 4000 Hz (sampling rate is 8 kHz)
 
-        fs = linspace(1,4000,4000);
-        [X2,d2] = method.psd(method, fs, Fs);
-        plot(fs,X2)
+        [X2,d2] = method.psd(method, 1:1:4000, 8000);
+        plot(1:1:4000,X2)
         
 ![2tone_psd](https://user-images.githubusercontent.com/40000574/190016488-6add0a3b-7601-44cb-a37e-6b01adf37529.jpg)
 
@@ -36,19 +39,19 @@ where <b>kind</b> is one of `pisarenko/music/ev/mn`, <b>M</b> is autocorrelation
         [fs] = method.eigenrooting(Fs, 0, 0)
 
 
-6. Get frequency components by peak searching
+6. Get detected frequencies by peak searching (considering only these frequencies that are passed in fs). peakWidth is a width of a peak, use 0 for default
 
-        [peaks, pmu] = method.peaks(fs, Fs, 0)
+        [peaks, pmu] = method.peaks(fs, Fs, peakWidth)
 
 
-7. Get amplitudes by correlation method
+7. In case of 1 or 2 sinusoids, get amplitudes by correlation method
 
-        A = method.single_tone_amplitude(peaks(1), peaks(2), Fs)
-        A = method.dual_tone_amplitude(peaks(1), peaks(2), Fs)
+        A = method.single_tone_amplitude()
+        A = method.dual_tone_amplitude(f1, f2, Fs)
 
-8. Get amplitudes by eigenvector method (solving eigen equations)
+8. In case of any number of sinusoids, get all amplitudes (for each frequency component given in fs)
 
-        A = method.solve_for_amplitudes([f1 f2 f3], Fs)
+        A = method.solve_for_amplitudes([fs], Fs);
 
 
  
@@ -99,6 +102,10 @@ A C library built on these results is [libmusic](https://github.com/dataandsigna
 
 URL: https://github.com/dataandsignal/libmusic_m
 
+## MATLAB File Exchange
+
+You can download this directly from [![View libmusic_m on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/117630-libmusic_m)
+
 
 ## Further reading, references
 
@@ -114,8 +121,7 @@ This is explained in more detail in:
 
 - Penny W. D., Signal Processing Course, University College London, 2000
 
-- and also in my own [engineering thesis](https://github.com/dataandsignal/libmusic_m/files/9567833/praca_inz_gregor.pdf)
-, (it's written in polish, probably will be translated to english) 
+- and also in my [engineering thesis](https://drive.google.com/file/d/1e2LjLYKVGIdSypj2sSbbauz2-SU5a1as/view?usp=sharing) (written in polish, probably will be translated to english) 
 
 
 ## Copyright 

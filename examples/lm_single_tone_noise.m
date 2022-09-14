@@ -20,7 +20,7 @@ s = s + sigma*randn(1,Fs); % Add white noise with standard deviation sigma
 
 P = 1;  % there is single real signal source in stream
 M = 5;  % autocorrelation order
-N = 24; % number of smaples to process
+N = 24; % number of samples to process
 
 methods = ["pisarenko" "music" "ev" "mn"];
 figure

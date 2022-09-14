@@ -10,7 +10,7 @@
 
 classdef lm_spectral_subspace_decomposition < handle
     properties
-        y    % (in) vectpr of N samples
+        y    % (in) vector of N samples
         M    % (in) autocorrelation order
         P2   % (in) dimension of pure signal space (if number of pure signals
         % is P, then for real signals it should be 2P, for complex use P

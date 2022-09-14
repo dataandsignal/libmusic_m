@@ -594,19 +594,19 @@ classdef lm_globals < handle
                             s(o.DTMF_START:o.DTMF_START+j-1) = x((o.DTMF_START:o.DTMF_START+j-1)+shift);
                         case 11
                             x = o.g_files(2,:);
-                            s(o.DTMF_START:o.DTMF_START+j-1) = x((o.DTMF_START:o.DTMF_START+j-1)+shift);
+                            s(o.DTMF_START:o.DTMF_START+j-1) = x(o.DTMF_START:o.DTMF_START+j-1);
                         case 12
                             x = o.g_files(2,:);
                             s(o.DTMF_START:o.DTMF_START+j-1) = x((o.DTMF_START:o.DTMF_START+j-1)+shift);
                         case 13
                             x = o.g_files(3,:);
-                            s(o.DTMF_START:o.DTMF_START+j-1) = x((o.DTMF_START:o.DTMF_START+j-1)+shift);
+                            s(o.DTMF_START:o.DTMF_START+j-1) = x((o.DTMF_START:o.DTMF_START+j-1));
                         case 14
                             x = o.g_files(3,:);
                             s(o.DTMF_START:o.DTMF_START+j-1) = x((o.DTMF_START:o.DTMF_START+j-1)+shift);
                         case 15
                             x = o.g_files(4,:);
-                            s(o.DTMF_START:o.DTMF_START+j-1) = x((o.DTMF_START:o.DTMF_START+j-1)+shift);
+                            s(o.DTMF_START:o.DTMF_START+j-1) = x((o.DTMF_START:o.DTMF_START+j-1));
                         case 16
                             x = o.g_files(4,:);
                             s(o.DTMF_START:o.DTMF_START+j-1) = x((o.DTMF_START:o.DTMF_START+j-1)+shift);
