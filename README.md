@@ -72,7 +72,8 @@ In telephony, DTMF symbols must be removed from stream, due too sensitive data p
 With MUSIC, samples requirement is reduced from 110 to 8 and frequency resolution (accuracy) increased from 72.73 Hz to 10^-2 Hz in the same time.
 This picture presents correctness as a percentage of detected fractions of dual tone signals (DTMFs), by input vector length **N** (8,9,10,11,12,14), autocorrelation order **M** (4-8) and fraction length **L** (8-28 samples).
 
-![dtmf_test_valid_freq_2](https://user-images.githubusercontent.com/40000574/190152713-0254f77f-af44-45fc-8f34-e4b8a57742d5.jpg)
+![dtmf_test_valid_freq_2](https://user-images.githubusercontent.com/40000574/190211567-43419122-a4bc-40c4-9e26-e7e9612ab8b8.jpg)
+
 
 
 For example, using a block of N=12 samples, all fractions of length L=10 and above can be detected (with autocorrelation order M={6,7}). N=8 detects all fractions longer than 8 samples (1 ms) with M=4.
@@ -107,7 +108,9 @@ A good references about spectral analysis and space decomposition methods are:
 - Lawrence Marple S. Jr., Digital Spectral Analysis, Dover Publications, 2019
 - Schmidt R. O., Multiple Emitter Location and Signal Parameter Estimation, IEEE Transactions on Antennas and Propagation, Vol. AP-34, No. 3, 1986
 
-These references are missing (or skipping it intentionally) a crucial result about autocorrelation and sinusoids embedded in a vector space whose elements are shifted samples of that same sinusoid (with all the phases). If you are asking yourself why this is autocorrelation that is being exploited in spectral analysis, you won't find this answer there - at least not explicit, or I could not. If these papers skip it deliberately - they should not, cause this is a fundamental finding space decomposition methods are built on. This is explained in:
+These references are missing though (or skipping intentionally) a crucial result about autocorrelation and sinusoids embedded in a vector space whose elements are shifted samples of that same sinusoid (with all the phases). This is a fundamental finding space decomposition methods are built on.
+
+This is explained in more detail in:
 
 - Penny W. D., Signal Processing Course, University College London, 2000
 
